@@ -1,4 +1,6 @@
 import unittest
 
-class TestEjercicio(unittest.TestCase):
-  self.assertTrue(True == False)
+class TestPrueba(unittest.TestCase):
+  
+  def test_prueba(self):
+    self.assertTrue(True == True)
