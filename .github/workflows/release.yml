@@ -27,19 +27,20 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Determinar el tag asociado al release de la versión
+      id: determinar_tag
       run: |
         nombre_tag=${GITHUB_REF#refs/tags/}
         echo "::set-output name=nombre_tag::$nombre_tag"
       
     - name: Hacer checkout a develop
       run: |
+        git fetch
         git checkout develop
-        git pull
       
     - name: Crea el branch release/v-versión
       id: crear_rama_release
       run: |
-        rama_release="release/$nombre_tag"
+        rama_release="release/${{ steps.determinar_tag.outputs.nombre_tag }}"
         git checkout -b "$rama_release"
         git push --set-upstream origin "$rama_release"
         echo "::set-output name=rama_release::$rama_release"
