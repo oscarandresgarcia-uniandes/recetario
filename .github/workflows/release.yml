@@ -1,0 +1,58 @@
+# Aplicación EnForma
+# CI para crear la rama release/v-version desde develop, correr pruebas unitarias y hacer merge a main
+# Este workflow se ejecuta al crearse un tag con el formato v0.0.0 asociado a la versión de la aplicación
+
+name: Creación rama release y merge a main
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+' # Expresión regular para identificar el tag de la versión
+
+jobs:
+  release:
+    name: Creación la rama release/v-versión y correr las pruebas unitarias
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout de repositorio
+      uses: actions/checkout@v2
+
+    - name: Configuración de entorno de python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+
+    - name: Instalación de librerías y dependencias
+      run: pip install -r requirements.txt
+
+    - name: Determinar el tag asociado al release de la versión
+      run: |
+        nombre_tag=${GITHUB_REF#refs/tags/}
+        echo "::set-output name=nombre_tag::$nombre_tag"
+
+    - name: Crea el branch release/v-versión
+      id: crear_rama_release
+      run: |
+        rama_release="release/$nombre_tag"
+        git checkout develop
+        git pull
+        git checkout -b "$rama_release"
+        git push origin "$rama_release"
+        echo "::set-output name=rama_release::$rama_release"
+
+    - name: Run Unit Tests in Release Branch
+      id: run_tests
+      run: |
+        rama_release="${{ steps.crear_rama_release.outputs.rama_release }}"
+        git checkout "$rama_release"
+        python -m unittest discover tests/
+
+    - name: Hacer merge de la rama release a main
+      if: steps.run_tests.outcome == 'success'
+      run: |
+        rama_release="${{ steps.crear_rama_release.outputs.rama_release }}"
+        git checkout main
+        git pull
+        git merge --no-ff "$rama_release"
+        git push origin main
