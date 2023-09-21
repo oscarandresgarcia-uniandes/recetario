@@ -62,5 +62,5 @@ jobs:
         git config --global user.email "oa.garcia2@uniandes.edu.co"
         git config --global user.name "[bot] - Integración continua"
         
-        git merge --no-ff --allow-unrelated-histories "$rama_release"
+        git merge --no-ff "$rama_release"
         git push origin main
