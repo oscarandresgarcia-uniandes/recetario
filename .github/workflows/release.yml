@@ -58,5 +58,9 @@ jobs:
         rama_release="${{ steps.crear_rama_release.outputs.rama_release }}"
         git checkout main
         git pull
+        
+        git config --global user.email "oa.garcia2@uniandes.edu.co"
+        git config --global user.name "[bot] - Integración continua"
+        
         git merge --no-ff "$rama_release"
         git push origin main
