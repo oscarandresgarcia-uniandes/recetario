@@ -34,7 +34,7 @@ jobs:
       
     - name: Hacer checkout a develop
       run: |
-        git pull
+        git fetch
         git checkout develop
       
     - name: Crea el branch release/v-versión
