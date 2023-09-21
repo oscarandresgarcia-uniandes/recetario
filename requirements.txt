@@ -1,5 +1,5 @@
 # =============================================================================
-# DEPRECATION WARNING:
+# DEPRECATION WARNING 1:
 #
 # The file `requirements.txt` does not influence the package dependencies and
 # will not be automatically created in the next version of PyScaffold (v4.x).
