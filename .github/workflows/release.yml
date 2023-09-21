@@ -30,19 +30,16 @@ jobs:
       run: |
         nombre_tag=${GITHUB_REF#refs/tags/}
         echo "::set-output name=nombre_tag::$nombre_tag"
-        
-    - name: Revisa branches existentes
-      run: git branch -a
       
     - name: Hacer checkout a develop
-      run: git checkout -b develop origin/develop
+      run: |
+        git checkout develop
+        git pull
       
     - name: Crea el branch release/v-versión
       id: crear_rama_release
       run: |
         rama_release="release/$nombre_tag"
-        git checkout develop
-        git pull
         git checkout -b "$rama_release"
         git push --set-upstream origin "$rama_release"
         echo "::set-output name=rama_release::$rama_release"
