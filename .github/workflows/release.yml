@@ -41,7 +41,7 @@ jobs:
         git push origin "$rama_release"
         echo "::set-output name=rama_release::$rama_release"
 
-    - name: Run Unit Tests in Release Branch
+    - name: Correr pruebas unitarias en la rama release/v-versión
       id: run_tests
       run: |
         rama_release="${{ steps.crear_rama_release.outputs.rama_release }}"
