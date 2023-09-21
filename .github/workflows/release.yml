@@ -42,10 +42,9 @@ jobs:
       run: |
         rama_release="release/$nombre_tag"
         git checkout develop
-        git checkout -b develop origin/develop
         git pull
         git checkout -b "$rama_release"
-        git push origin "$rama_release"
+        git push --set-upstream origin "$rama_release"
         echo "::set-output name=rama_release::$rama_release"
 
     - name: Correr pruebas unitarias en la rama release/v-versión
