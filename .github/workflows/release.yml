@@ -33,6 +33,7 @@ jobs:
       
     - name: Hacer checkout a develop
       run: |
+        git fetch
         git checkout develop
         git pull
       
